@@ -77,6 +77,7 @@ public class three {
         }
         System.out.println("s 的值为：" + s);
         scanner.close();
+        System.out.println(666);
 
     }
 }
