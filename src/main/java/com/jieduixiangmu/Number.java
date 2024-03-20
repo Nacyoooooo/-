@@ -45,8 +45,8 @@ public class Number {
                 }
             }
             case PROPER_FRACTION -> {
-                String[] split = expression.split("\\");
-                if(split.length<2)legal=false;
+                String[] split = expression.split("\\\\");
+                if(split.length!=2)legal=false;
                 try {
                     if(Integer.valueOf(split[0])>=Integer.valueOf(split[1]))legal=false;
                 }catch (Exception e){
@@ -54,8 +54,8 @@ public class Number {
                 }
             }
             case FACK_FRACTION -> {
-                String[] split = expression.split("\\");
-                if(split.length<2)legal=false;
+                String[] split = expression.split("\\\\");
+                if(split.length!=2)legal=false;
                 try {
                     if(Integer.valueOf(split[01])>=Integer.valueOf(split[0]))legal=false;
                 }catch (Exception e){
