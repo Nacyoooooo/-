@@ -2,6 +2,7 @@ package com.jieduixiangmu;
 
 import java.util.Scanner;
 import java.util.Random;
+import org.apache.commons.lang3.math.Fraction;
 
 public class operation {
     public static void main(String[] args) {
@@ -21,15 +22,65 @@ public class operation {
         for (int i = 0; i < numberOfProblems; i++) {
             generateArithmeticProblem(range, random);
         }
+
         scanner.close();
 
 
     }
 
+    // 生成一个范围内的随机整数
 
+    public static int generateRandomInt(int range) {
+        Random random = new Random();
+        return random.nextInt(range) + 1;
+    }
+
+    //生成一个随机分数，以字符串形式返回
+    public static String generateRandomFraction(int range) {
+        Random random = new Random();
+
+        //分母的范围为1~r，分子为1~r*r（确保分数范围在1~r）
+        int denominator = random.nextInt(range) + 1;
+        int numerator = random.nextInt(range*range) + 1;
+
+        // 简化分数
+        int gcd = greatestCommonDivisor(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+        Fraction fraction = Fraction.getFraction(numerator,denominator);
+        String fac = fraction.toString();
+        return fac;
+    }
+
+    // 计算两个数的最大公约数（GCD）
+    public static int greatestCommonDivisor(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+
+    //生成一条四则运算题目
     private static void generateArithmeticProblem(int range, Random random) {
-        int num1 = random.nextInt(range) + 1; // 随机生成1到range之间的整数
-        int num2 = random.nextInt(range) + 1; // 随机生成1到range之间的整数
+        //随机确定生成整数算式还是分数算式
+        int choose =random.nextInt(2);
+        int num1=0,num2=0;
+        Fraction fac1,fac2;
+        switch (choose){
+            case 0:
+                num1 = generateRandomInt(range);
+                num2 = generateRandomInt(range);
+                break;
+            case 1:
+                fac1 = Fraction.getFraction(generateRandomFraction(range));
+                fac2 = Fraction.getFraction(generateRandomFraction(range));
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value");
+        }
+
         String operator;
         int result;
 
@@ -64,6 +115,7 @@ public class operation {
             default:
                 throw new IllegalStateException("Unexpected value");
         }
+        String problem = num1+operator+num2+"=?";
         System.out.println("题目: " + num1 + " " + operator + " " + num2 + " = " + result);
     }
 }
