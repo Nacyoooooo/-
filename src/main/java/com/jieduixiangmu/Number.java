@@ -50,16 +50,19 @@ public class Number {
                 String[] split = expression.split("/");
                 if(split.length!=2)legal=false;
                 try {
+                    //
                     if(Integer.valueOf(split[0])>=Integer.valueOf(split[1]))legal=false;
                 }catch (Exception e){
                     legal=false;
                 }
             }
             case WITH_FRACTION -> {
-                String[] split = expression.split("/");
-                if(split.length!=2)legal=false;
+                String regex = "(\\d+)\\s(\\d+)/(\\d+)";
+                String[] split = expression.split(regex);
+                if(split.length!=3)legal=false;
                 try {
-                    if(Integer.valueOf(split[01])>=Integer.valueOf(split[0]))legal=false;
+                    //TODO 改成处理带分数是否合法的逻辑
+
                 }catch (Exception e){
                     legal=false;
                 }

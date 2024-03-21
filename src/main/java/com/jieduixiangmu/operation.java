@@ -13,12 +13,24 @@ public class operation {
         }
         int numberOfProblems = 0;
         int range = 0;
-        for (String arg : args) {
-            if (arg.startsWith("-n")) {
-                numberOfProblems = Integer.parseInt(arg.split("-")[1]);
-            } else if (arg.startsWith("-r")) {
-                range = Integer.parseInt(arg.split("-")[1]);
+//        for (String arg : args) {
+//            if (arg.startsWith("-n")) {
+//                String[] split = arg.split("-");
+//                numberOfProblems = Integer.parseInt(arg.split("-")[1]);
+//            } else if (arg.startsWith("-r")) {
+//                range = Integer.parseInt(arg.split("-")[1]);
+//            }
+//        }
+        try {
+            for (int i = 0; i < args.length; i++) {
+                if(args[i].startsWith("-n")){
+                    numberOfProblems = Integer.parseInt(args[i+1]);
+                }else if (args[i].startsWith("-r")) {
+                    range = Integer.parseInt(args[i+1]);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         if (range < 1) {
             System.out.println("Range must be a natural number greater than 0.");
@@ -102,6 +114,9 @@ public class operation {
             case 0:
                 num1 = generateRandomInt(range);
                 num2 = generateRandomInt(range);
+                while (num2==0){
+                    num2=generateRandomInt(range);
+                }
                 break;
             case 1:
                 fac1 = Fraction.getFraction(generateRandomFraction(range));
