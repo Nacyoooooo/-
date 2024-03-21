@@ -62,7 +62,7 @@ public class Number {
                 if(split.length!=3)legal=false;
                 try {
                     //TODO 改成处理带分数是否合法的逻辑
-
+                    if(Integer.valueOf(split[1])>=Integer.valueOf(split[2]))legal=false;
                 }catch (Exception e){
                     legal=false;
                 }
