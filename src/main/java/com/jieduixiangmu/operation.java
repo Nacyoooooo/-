@@ -6,16 +6,22 @@ import org.apache.commons.lang3.math.Fraction;
 
 public class operation {
     public static void main(String[] args) {
-        System.out.println("欢迎使用小学四则运算题目生成器");
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("请输入需要生成的题目个数(1<=n<=10000)：");
+        if (args.length < 2) {
+            System.out.println("Usage: Myapp.exe -n <number_of_problems> -r <range>");
+            System.out.println("Example: Myapp.exe -n 10 -r 5");
+            return;
+        }
         int numberOfProblems = 0;
         int range = 0;
-        numberOfProblems = scanner.nextInt();
-        System.out.println("请输入生成题目中的数值范围(r>=1)：");
-        range = scanner.nextInt();
+        for (String arg : args) {
+            if (arg.startsWith("-n")) {
+                numberOfProblems = Integer.parseInt(arg.split("-")[1]);
+            } else if (arg.startsWith("-r")) {
+                range = Integer.parseInt(arg.split("-")[1]);
+            }
+        }
         if (range < 1) {
-            System.out.println("范围必须大于0");
+            System.out.println("Range must be a natural number greater than 0.");
             return;
         }
         Random random = new Random();
@@ -23,19 +29,26 @@ public class operation {
             generateArithmeticProblem(range, random);
         }
 
-        scanner.close();
-
 
     }
 
-    // 生成一个范围内的随机整数
+    /**
+     * 生成一个范围内的随机整数
+     * @param range
+     * @return
+     */
 
     public static int generateRandomInt(int range) {
         Random random = new Random();
         return random.nextInt(range) + 1;
     }
 
-    //生成一个随机分数，以字符串形式返回
+
+    /**
+     * 生成一个随机分数，以字符串形式返回
+     * @param range
+     * @return
+     */
     public static String generateRandomFraction(int range) {
         Random random = new Random();
 
@@ -47,12 +60,25 @@ public class operation {
         int gcd = greatestCommonDivisor(numerator, denominator);
         numerator /= gcd;
         denominator /= gcd;
-        Fraction fraction = Fraction.getFraction(numerator,denominator);
-        String fac = fraction.toString();
+        String fac;
+        if (numerator<denominator){
+            Fraction fraction = Fraction.getFraction(numerator,denominator);
+            fac = fraction.toString();
+        }
+        else {
+            Fraction fraction = Fraction.getFraction(numerator,denominator);
+            fac = fraction.toProperString();
+        }
+
         return fac;
     }
 
-    // 计算两个数的最大公约数（GCD）
+    /**
+     * 计算两个数的最大公约数（GCD）
+     * @param a
+     * @param b
+     * @return
+     */
     public static int greatestCommonDivisor(int a, int b) {
         while (b != 0) {
             int temp = b;
@@ -62,7 +88,11 @@ public class operation {
         return a;
     }
 
-    //生成一条四则运算题目
+    /**
+     * 生成一条四则运算题目
+     * @param range
+     * @param random
+     */
     private static void generateArithmeticProblem(int range, Random random) {
         //随机确定生成整数算式还是分数算式
         int choose =random.nextInt(2);
