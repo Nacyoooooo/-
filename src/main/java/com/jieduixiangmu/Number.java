@@ -9,10 +9,10 @@ public class Number {
     public static final int UNEXIST=-1;//不存在
     public static final int INT=0;//整形
     public static final int PROPER_FRACTION=1;//真分数
-    public static final int FACK_FRACTION=2;//假分数
+    public static final int WITH_FRACTION =2;//带分数
     public static Number ERROR=new Number(null,UNEXIST);
     int type;//表示这个数字是整数，还是真分数，假分数
-    String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  3/2（假分数）
+    String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1'1/2（带分数）
     public Number(String expression,int type){
         this.expression=expression;
         this.type=type;
@@ -55,7 +55,7 @@ public class Number {
                     legal=false;
                 }
             }
-            case FACK_FRACTION -> {
+            case WITH_FRACTION -> {
                 String[] split = expression.split("/");
                 if(split.length!=2)legal=false;
                 try {
@@ -95,7 +95,7 @@ public class Number {
             return ERROR;
         }
         if(left==right)return ERROR;
-        else if (left>right)return new Number(expression,FACK_FRACTION);
+        else if (left>right)return new Number(expression, WITH_FRACTION);
         else return new Number(expression,PROPER_FRACTION);
     }
 
