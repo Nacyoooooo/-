@@ -1,6 +1,8 @@
 package com.jieduixiangmu;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 表示数字的类
@@ -58,10 +60,18 @@ public class Number {
             }
             case WITH_FRACTION -> {
                 String regex = "(\\d+)\\s(\\d+)/(\\d+)";
-                String[] split = expression.split(regex);
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(expression);
+                String[] split = new String[3];
+                if (matcher.matches()) {
+                    split[0] = matcher.group(1);
+                    split[1] = matcher.group(2);
+                    split[2] = matcher.group(3);
+                }
                 if(split.length!=3)legal=false;
                 try {
                     //TODO 改成处理带分数是否合法的逻辑
+                    Integer.valueOf(split[0]);
                     if(Integer.valueOf(split[1])>=Integer.valueOf(split[2]))legal=false;
                 }catch (Exception e){
                     legal=false;
