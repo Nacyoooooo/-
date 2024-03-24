@@ -14,7 +14,7 @@ public class Number {
     public static final int WITH_FRACTION =2;//带分数
     public static Number ERROR=new Number(null,UNEXIST);
     int type;//表示这个数字是整数，还是真分数，假分数
-    String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1'1/2（带分数）
+    String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1 1/2（带分数）
     public Number(String expression,int type){
         this.expression=expression;
         this.type=type;
