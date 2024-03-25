@@ -1,5 +1,7 @@
 package com.jieduixiangmu;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +14,14 @@ public class Number {
     public static final int INT=0;//整形
     public static final int PROPER_FRACTION=1;//真分数
     public static final int WITH_FRACTION =2;//带分数
+    public static final int OPERATOR=3;//符号
     public static Number ERROR=new Number(null,UNEXIST);
+    public static Map<String,Symbol>OPERATORS=new HashMap<>();
+    static {
+        OPERATORS.put("+",Symbol.ADD);
+        OPERATORS.put("-",Symbol.SUB);
+        OPERATORS.put("*",Symbol.MUL);
+    }
     int type;//表示这个数字是整数，还是真分数，假分数
     String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1 1/2（带分数）
     public Number(String expression,int type){
@@ -41,23 +50,34 @@ public class Number {
         if(expression==null||expression.isEmpty())return false;
         boolean legal=true;
         switch (type) {
+            //操作符
+            case OPERATOR -> {
+                //如果是在定义的操作符里，则说明该ex是合法的操作符
+                if(OPERATORS.get(expression)!=null){
+                    return true;
+                }
+            }
+            //整数
             case INT -> {
-                try {
+                try {//使用Integer类的字符串强转数字，如果报错，说明该字符串本身就不代表数字
                     Integer.valueOf(expression);
                 } catch (Exception e) {
                     legal=false;
                 }
             }
+            //真分数
             case PROPER_FRACTION -> {
                 String[] split = expression.split("/");
                 if(split.length!=2)legal=false;
                 try {
-                    //
+                    //使用Integer类的字符串强转数字，如果报错，说明该字符串本身就不代表数字
                     if(Integer.valueOf(split[0])>=Integer.valueOf(split[1]))legal=false;
                 }catch (Exception e){
                     legal=false;
                 }
             }
+            //带分数
+            //TODO 带分数的处理逻辑仍需修改
             case WITH_FRACTION -> {
                 String regex = "(\\d+)\\s(\\d+)/(\\d+)";
                 Pattern pattern = Pattern.compile(regex);
@@ -77,6 +97,7 @@ public class Number {
                     legal=false;
                 }
             }
+            //默认，如果都没匹配上，说明type不合法！
             default -> {
                 legal=false;
             }
@@ -91,6 +112,9 @@ public class Number {
      */
     public static final Number forExpression(String expression){
         if(expression==null||expression.isEmpty())return ERROR;
+        if(OPERATORS.get(expression)!=null){
+            return new Number(expression,OPERATOR);
+        }
         try {
             Integer i = Integer.valueOf(expression);
             return new Number(expression,INT);
