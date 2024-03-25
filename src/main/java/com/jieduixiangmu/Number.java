@@ -21,6 +21,10 @@ public class Number {
         OPERATORS.put("+",Symbol.ADD);
         OPERATORS.put("-",Symbol.SUB);
         OPERATORS.put("*",Symbol.MUL);
+        OPERATORS.put("/",Symbol.DIV);
+        OPERATORS.put("(",Symbol.LEFT_BRACKET);
+        OPERATORS.put(")",Symbol.RIGHT_BRACKET);
+        OPERATORS.put("'",Symbol.APOSTROPHE);
     }
     int type;//表示这个数字是整数，还是真分数，假分数
     String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1 1/2（带分数）
@@ -111,16 +115,21 @@ public class Number {
      * @return
      */
     public static final Number forExpression(String expression){
+        //若为空，则返回错误
         if(expression==null||expression.isEmpty())return ERROR;
+        //若操作符集中有该符号，则直接创建对象
         if(Number.OPERATORS.get(expression)!=null){
             return new Number(expression,OPERATOR);
         }
+        //若能转化为整数，则说明该表达式本身就是整数
         try {
             Integer i = Integer.valueOf(expression);
             return new Number(expression,INT);
         }catch (Exception e){
 
         }
+
+        //由/分割，且只能分割为两个，否则错误
         String[] split = expression.split("/");
         if(split==null||split.length!=2)return ERROR;
         Integer left = 0;
@@ -129,10 +138,18 @@ public class Number {
             left = Integer.valueOf(split[0]);
             right = Integer.valueOf(split[1]);
         }catch (Exception e){
-            return ERROR;
+            //TODO 此处处理带分数的逻辑
+            try {
+                String[] split1 = split[0].split("'");
+                int l1=Integer.valueOf(split1[0]);
+                int l2=Integer.valueOf(split1[1]);
+                return new Number(expression,WITH_FRACTION);
+            }catch (Exception e1){
+                return ERROR;
+            }
         }
-        if(left==right)return ERROR;
-        else if (left>right)return new Number(expression, WITH_FRACTION);
+        //左右两个数不能相等,左边必须小于右边
+        if(left>=right)return ERROR;
         else return new Number(expression,PROPER_FRACTION);
     }
 
