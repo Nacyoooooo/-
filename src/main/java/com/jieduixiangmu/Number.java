@@ -128,29 +128,35 @@ public class Number {
         }catch (Exception e){
 
         }
-
-        //由/分割，且只能分割为两个，否则错误
-        String[] split = expression.split("/");
-        if(split==null||split.length!=2)return ERROR;
-        Integer left = 0;
-        Integer right = 0;
+        //若能转化为整数，则说明该表达式本身就是真分数
         try {
+            //由/分割，且只能分割为两个，否则错误
+            String[] split = expression.split("/");
+            if(split==null||split.length!=2)return ERROR;
+            Integer left = 0;
+            Integer right = 0;
             left = Integer.valueOf(split[0]);
             right = Integer.valueOf(split[1]);
+            //左右两个数不能相等,左边必须小于右边
+            if(left>=right)return ERROR;
+            else return new Number(expression,PROPER_FRACTION);
         }catch (Exception e){
-            //TODO 此处处理带分数的逻辑
-            try {
-                String[] split1 = split[0].split("'");
-                int l1=Integer.valueOf(split1[0]);
-                int l2=Integer.valueOf(split1[1]);
-                return new Number(expression,WITH_FRACTION);
-            }catch (Exception e1){
-                return ERROR;
-            }
+
         }
-        //左右两个数不能相等,左边必须小于右边
-        if(left>=right)return ERROR;
-        else return new Number(expression,PROPER_FRACTION);
+        //TODO 此处处理带分数的逻辑
+        //若能转化为整数，则说明该表达式本身就是带分数
+        try {
+            //通过'或者/分割表达式
+            String[] split = expression.split("'|/");
+            if(split.length!=3)return ERROR;
+            //TODO 改成处理带分数是否合法的逻辑
+            Integer.valueOf(split[0]);
+            if(Integer.valueOf(split[1])>=Integer.valueOf(split[2]))return ERROR;
+            return new Number(expression,WITH_FRACTION);
+        }catch (Exception e){
+
+        }
+        return ERROR;
     }
 
 }
