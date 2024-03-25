@@ -6,12 +6,6 @@ import java.util.Map;
 
 public class Symbol {
     public Compute operation;
-    public static Map<String,Symbol> OPERATORS=new HashMap<>();
-    static {
-        OPERATORS.put("+",Symbol.ADD);
-        OPERATORS.put("-",Symbol.SUB);
-        OPERATORS.put("*",Symbol.MUL);
-    }
     public Symbol(Compute operation){
         this.operation=operation;
     }
