@@ -47,7 +47,7 @@ public class Number {
             //操作符
             case OPERATOR -> {
                 //如果是在定义的操作符里，则说明该ex是合法的操作符
-                if(OPERATORS.get(expression)!=null){
+                if(Symbol.OPERATORS.get(expression)!=null){
                     return true;
                 }
             }
@@ -106,7 +106,7 @@ public class Number {
      */
     public static final Number forExpression(String expression){
         if(expression==null||expression.isEmpty())return ERROR;
-        if(OPERATORS.get(expression)!=null){
+        if(Symbol.OPERATORS.get(expression)!=null){
             return new Number(expression,OPERATOR);
         }
         try {
