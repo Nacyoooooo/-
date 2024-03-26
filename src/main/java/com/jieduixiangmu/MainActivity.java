@@ -4,6 +4,7 @@ package com.jieduixiangmu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -140,17 +141,18 @@ public class MainActivity {
         if(isEx&&isAn){
             String read = FileUtilss.read(exerciseFile);
             String answersssss = FileUtilss.read(answerFile);
-            String[] answr = answersssss.split("\\.");
-            String[] split = read.split("=\n");
+            String[] answr = answersssss.split("\n");
+            String[] split = read.split("=\r\n");
             String Correct="(";
             String Wrong="(";
             List<String>cor=new ArrayList<>();
             List<String>wro=new ArrayList<>();
             for (int i = 0; i < split.length; i++) {
+                if(split[i].equals(""))continue;
                 String s = split[i];
                 String[] split1 = s.split("\\.");
                 Number calculate = NumberUtil.calculate(NumberUtil.getPostfix(split1[1]));
-                if(answr[i].equals(calculate.toString())){
+                if(answr[i].split("\\.")[1].equals(calculate.toString())){
                     cor.add(split1[0]);
                 }else {
                     wro.add(split1[0]);
@@ -163,7 +165,7 @@ public class MainActivity {
                 }else {
                     Correct+=")";
                 }
-            }Correct+=cor.size()+Correct;
+            }Correct=cor.size()+Correct;
             if(cor.isEmpty()){
                 Correct="0()";
             }
