@@ -15,7 +15,9 @@ public class Number {
     public static final int PROPER_FRACTION=1;//真分数
     public static final int WITH_FRACTION =2;//带分数
     public static final int OPERATOR=3;//符号
+    public static final int FAKE_FRACTION=4;//假分数
     public static Number ERROR=new Number(null,UNEXIST);
+    public static Number FAKE=new Number(null,FAKE_FRACTION);
     public static Map<String,Symbol> OPERATORS=new HashMap<>();
     static {
         OPERATORS.put("+",Symbol.ADD);
@@ -24,7 +26,6 @@ public class Number {
         OPERATORS.put("/",Symbol.DIV);
         OPERATORS.put("(",Symbol.LEFT_BRACKET);
         OPERATORS.put(")",Symbol.RIGHT_BRACKET);
-        OPERATORS.put("'",Symbol.APOSTROPHE);
     }
     int type;//表示这个数字是整数，还是真分数，假分数
     String expression;//表示这个数的元数据，如1（整数）    1/2（真分数）  1 1/2（带分数）
@@ -138,7 +139,7 @@ public class Number {
             left = Integer.valueOf(split[0]);
             right = Integer.valueOf(split[1]);
             //左右两个数不能相等,左边必须小于右边
-            if(left>=right)return ERROR;
+            if(left>=right)return new Number(expression,FAKE_FRACTION);
             else return new Number(expression,PROPER_FRACTION);
         }catch (Exception e){
 

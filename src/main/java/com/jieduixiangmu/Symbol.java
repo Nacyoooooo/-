@@ -14,10 +14,16 @@ public class Symbol {
     public Symbol(Compute operation) {
         this.operation = operation;
     }
+    public static void p(Number...args){
+//        for (Number arg : args) {
+//            System.out.println(arg);
+//        }
+    }
 
     //加号+ 1'1/2
     public static Symbol ADD = new Symbol((args) -> {
-        if (args == null || args.length != 2) return null;
+        p(args);
+        if (args == null || args.length != 2) return ERROR;
         String arr1 = args[0].toString();
         String arr2 = args[1].toString();
         arr1 = arr1.replaceAll("'", " ");
@@ -38,7 +44,8 @@ public class Symbol {
     });
     //减号-
     public static Symbol SUB = new Symbol((args) -> {
-        if (args == null || args.length != 2) return null;
+        p(args);
+        if (args == null || args.length != 2) return ERROR;
         String arr1 = args[0].toString();
         String arr2 = args[1].toString();
         arr1 = arr1.replaceAll("'", " ");
@@ -59,7 +66,8 @@ public class Symbol {
     });
     //乘号*
     public static Symbol MUL = new Symbol((args) -> {
-        if (args == null || args.length != 2) return null;
+        p(args);
+        if (args == null || args.length != 2) return ERROR;
         String arr1 = args[0].toString();
         String arr2 = args[1].toString();
         arr1 = arr1.replaceAll("'", " ");
@@ -80,7 +88,8 @@ public class Symbol {
     });
     //除号/
     public static Symbol DIV = new Symbol(args -> {
-        if (args == null || args.length != 2) return null;
+        p(args);
+        if (args == null || args.length != 2) return ERROR;
         String arr1 = args[0].toString();
         String arr2 = args[1].toString();
         arr1 = arr1.replaceAll("'", " ");

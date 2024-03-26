@@ -31,10 +31,21 @@ public class NumberUtil {
                 case NUMBER -> {
                     //判断是否是连续的数字字符，用于判断两位数以上的数字，如22
                     int j=0;
+                    Integer num=0;
+                    boolean isWith=false;
                     for (j = i+1; j < charArray.length; j++) {
                         //如果不是数字则终止循环
                         char c1=charArray[j];
-                        if(getType(c1,true)!=NUMBER) break;
+                        if("'".equals(String.valueOf(c1))){
+                            isWith=true;
+                        }
+                        if(getType(c1,isWith,num)!=NUMBER) {
+                            break;
+                        }else {
+                            if(c1=='/'){
+                                num++;
+                            }
+                        }
                         //下一个是数字则继续
                     }
                     inFix.add(Number.forExpression(
@@ -172,8 +183,8 @@ public class NumberUtil {
         }
         return ERROR;
     }
-    public static int getType(char c,boolean isWith){
-        if(isWith){
+    public static int getType(char c,boolean isWith,Integer num){
+        if(isWith&&num==0){
             if(c=='/')return NUMBER;
         }
         if((c<='9'&&c>='0')||c=="'".toCharArray()[0])return NUMBER;
@@ -217,5 +228,32 @@ public class NumberUtil {
                 return null;
             }
         }
+    }
+
+    /**
+     *
+     * @param postFix
+     * @return
+     */
+    public static Number calculate(List<Number> postFix){
+        if(postFix==null||postFix.isEmpty()){
+            return Number.ERROR;
+        }
+        MyList<Number>numbers=new MyList<>();
+        postFix.forEach(number -> {
+            switch (number.type){
+                case Number.OPERATOR -> {
+                    Number n1 = numbers.tail();
+                    Number n2 = numbers.tail();
+                    Symbol symbol = OPERATORS.get(number.expression);
+                    Number compute = symbol.compute(n2, n1);
+                    numbers.push(compute);
+                }
+                default -> {
+                    numbers.push(number);
+                }
+            }
+        });
+        return numbers.tail();
     }
 }
